@@ -48,10 +48,7 @@ var barSvg = d3.select("#bar_chart")
   .attr('height', barH);
 
 // timeline SVG
-var timeSvg = d3.select("#timeline")
-  .append("svg")
-  .attr("width", 1350)
-  .attr("height", 200);
+var timeSvg = d3.select("#timeline-svg");
 
 // static variables
 var numTop = 20;
