@@ -1,4 +1,21 @@
 //////////////////////////////////////////
+// show loading message
+//////////////////////////////////////////
+function showListElems(listElemCounter) {
+  setTimeout(() => {
+    document.getElementsByTagName("li")[listElemCounter].removeAttribute("style");
+    listElemCounter++;
+    if (listElemCounter < listElems.length) {
+      showListElems(listElemCounter);
+    }
+  }, 500);
+}
+
+const listElems = document.getElementsByTagName("li");
+// let listElemCounter = 0;
+showListElems(0);
+
+//////////////////////////////////////////
 // define variables & create blank svgs
 //////////////////////////////////////////
 
@@ -43,8 +60,8 @@ var arrowRange = [10, 50];
 var impColor = "#026689";
 var expColor = "#F0622E";
 var lineFunction = d3.svg.line()
-  .x(function(d) { return d.x; })
-  .y(function(d) {return d.y; })
+  .x(function (d) { return d.x; })
+  .y(function (d) { return d.y; })
   .interpolate("linear-closed");
 var numMonths = 49;
 
@@ -60,7 +77,7 @@ var month = 0;
 var commodity = "total";
 var objectLookupString = tradeFlow + "." + month + "." + commodity;
 var topCountries;
-var scale_numbers = [0,0,0,0,0];
+var scale_numbers = [0, 0, 0, 0, 0];
 var closestDollars;
 
 ///////////////////////////////////////////////////////////////
@@ -68,7 +85,7 @@ var closestDollars;
 ///////////////////////////////////////////////////////////////
 function netValue(cntryObject) {
   if ((Object.byString(cntryObject, "export" + "." + month + "." + commodity) != 0) && (Object.byString(cntryObject, "import" + "." + month + "." + commodity) != 0)) {
-    return (Object.byString(cntryObject, "export" + "." + month + "." + commodity) - Object.byString(cntryObject, "import" + "." + month + "." + commodity));  
+    return (Object.byString(cntryObject, "export" + "." + month + "." + commodity) - Object.byString(cntryObject, "import" + "." + month + "." + commodity));
   }
   else {
     return 0;
@@ -83,7 +100,7 @@ function tradeFlowButton(btn) {
   tradeFlow = clickedButton.id;
   if (clickedButton.className == "trade-direction") {
     var allButtons = document.getElementsByName('tradeButton');
-    for (var i=0, n = allButtons.length; i < n; i++) {
+    for (var i = 0, n = allButtons.length; i < n; i++) {
       allButtons[i].className = "trade-direction";
     };
     clickedButton.className = "trade-direction-active";
@@ -113,7 +130,7 @@ function makeDollars(inDollars) {
 ////////////////////////
 // slider functions
 ////////////////////////
-d3.select("#slider").on('change', function() {
+d3.select("#slider").on('change', function () {
   changeSlider(500);
 });
 
@@ -123,9 +140,9 @@ function changeSlider(tLength) {
   redraw(tLength);
 };
 
-/////////////////////////////
+//////////////////////////////////////////
 // queue data
-/////////////////////////////
+//////////////////////////////////////////
 queue()
   .defer(d3.json, './static/world-50m.json')
   .defer(d3.tsv, './static/world_country_ids.tsv')
@@ -136,13 +153,16 @@ queue()
 // draw visualization
 /////////////////////////////////////
 function makeViz(error, world, countryNameByID, td) {
+
   makeTimelineStatic(timeSvg);
   if (error) {
     console.log('error', error);
   }
   else {
     console.log("data loaded");
-    trade_data = td;   
+    document.getElementById("loading").style.display = "none";
+    document.getElementsByTagName("main")[0].removeAttribute("style");
+    trade_data = td;
   }
 
   // draw map
@@ -156,8 +176,8 @@ function makeViz(error, world, countryNameByID, td) {
     .append("path")
     .attr("d", path)
     .attr("class", "map_path")
-    .attr("name", function(d) {
-      var countryobj = countryNameByID.filter(function(obj) {
+    .attr("name", function (d) {
+      var countryobj = countryNameByID.filter(function (obj) {
         return obj.id == d.id;
       })
       if (typeof countryobj[0] != "undefined") {
@@ -181,44 +201,44 @@ function makeViz(error, world, countryNameByID, td) {
   }
 
   // calculate totals
-  trade_data.forEach(function(cntryObj, cntryIndex) {
+  trade_data.forEach(function (cntryObj, cntryIndex) {
     // calculate total exports
-    cntryObj["export"].forEach(function(expRow, expIndex) {
+    cntryObj["export"].forEach(function (expRow, expIndex) {
       var total = 0;
-      var newExpRow = {"total": 0, "children": {}};
+      var newExpRow = { "total": 0, "children": {} };
       for (key in expRow) {
-        var level00 = key.toString().substring(0,2);
+        var level00 = key.toString().substring(0, 2);
         var section = sectionLookup[level00];
         newExpRow["total"] += expRow[key];
         if (!(section in newExpRow["children"])) {
-          newExpRow["children"][section] = {"total": 0, "children": {}};
+          newExpRow["children"][section] = { "total": 0, "children": {} };
         }
         newExpRow["children"][section]["total"] += expRow[key];
         if (!(level00 in newExpRow["children"][section]["children"])) {
-          newExpRow["children"][section]["children"][level00] = {"total": 0, "children": {}};
+          newExpRow["children"][section]["children"][level00] = { "total": 0, "children": {} };
         }
         newExpRow["children"][section]["children"][level00]["total"] += expRow[key];
-        newExpRow["children"][section]["children"][level00]["children"][key] = expRow[key];        
+        newExpRow["children"][section]["children"][level00]["children"][key] = expRow[key];
       }
       cntryObj["export"][expIndex] = newExpRow;
     })
     // calculate total imports
-    cntryObj["import"].forEach(function(impRow, impIndex) {
+    cntryObj["import"].forEach(function (impRow, impIndex) {
       var total = 0;
-      var newImpRow = {"total": 0, "children": {}};
+      var newImpRow = { "total": 0, "children": {} };
       for (key in impRow) {
-        var level00 = key.toString().substring(0,2);
+        var level00 = key.toString().substring(0, 2);
         var section = sectionLookup[level00];
         newImpRow["total"] += impRow[key];
         if (!(section in newImpRow["children"])) {
-          newImpRow["children"][section] = {"total": 0, "children": {}};
+          newImpRow["children"][section] = { "total": 0, "children": {} };
         }
         newImpRow["children"][section]["total"] += impRow[key];
         if (!(level00 in newImpRow["children"][section]["children"])) {
-          newImpRow["children"][section]["children"][level00] = {"total": 0, "children": {}};
+          newImpRow["children"][section]["children"][level00] = { "total": 0, "children": {} };
         }
         newImpRow["children"][section]["children"][level00]["total"] += impRow[key];
-        newImpRow["children"][section]["children"][level00]["children"][key] = impRow[key];        
+        newImpRow["children"][section]["children"][level00]["children"][key] = impRow[key];
       }
       cntryObj["import"][impIndex] = newImpRow;
     })
@@ -245,11 +265,11 @@ function makeViz(error, world, countryNameByID, td) {
         return 1;
       if (Object.byString(a, objectLookupString) > Object.byString(b, objectLookupString))
         return -1;
-      return 0; 
+      return 0;
     });
   }
 
-  var topCountries = trade_data.slice(0,numTop);
+  var topCountries = trade_data.slice(0, numTop);
 
   // draw arrows for top countries
   var arrowRangeTop, arrowRangeBottom;
@@ -265,7 +285,7 @@ function makeViz(error, world, countryNameByID, td) {
     .domain([arrowRangeTop, arrowRangeBottom])
     .range(arrowRange);
 
-  topCountries.forEach(function(d, i) {
+  topCountries.forEach(function (d, i) {
     growArrow(d, arrowtipScale, 2000);
   })
 
@@ -300,11 +320,11 @@ function redraw(tLength) {
         return 1;
       if (Object.byString(a, objectLookupString) > Object.byString(b, objectLookupString))
         return -1;
-      return 0; 
+      return 0;
     });
   }
 
-  var topCountries = trade_data.slice(0,numTop);
+  var topCountries = trade_data.slice(0, numTop);
 
   // draw arrows for top countries
   var arrowRangeTop, arrowRangeBottom;
@@ -320,7 +340,7 @@ function redraw(tLength) {
     .domain([arrowRangeTop, arrowRangeBottom])
     .range(arrowRange);
 
-  topCountries.forEach(function(d, i) {
+  topCountries.forEach(function (d, i) {
     growArrow(d, arrowtipScale, tLength * 4);
   })
 
@@ -334,9 +354,9 @@ function redraw(tLength) {
 // function to get index of key value in array
 /////////////////////////////////////////////////
 function functiontofindIndexByKeyValue(arraytosearch, key, valuetosearch) {
- 
+
   for (var i = 0; i < arraytosearch.length; i++) {
-   
+
     if (arraytosearch[i][key] == valuetosearch) {
       return i;
     }
@@ -349,30 +369,30 @@ function functiontofindIndexByKeyValue(arraytosearch, key, valuetosearch) {
 // function to check if array contains object
 /////////////////////////////////////////////////
 function contains(a, obj) {
-    for (var i = 0; i < a.length; i++) {
-        if (a[i] === obj) {
-            return true;
-        }
+  for (var i = 0; i < a.length; i++) {
+    if (a[i] === obj) {
+      return true;
     }
-    return false;
+  }
+  return false;
 }
 
 /////////////////////////////////////////////////
 // function to get object using string
 /////////////////////////////////////////////////
-Object.byString = function(o, s) {
-    s = s.replace(/\[(\w+)\]/g, '.$1'); // convert indexes to properties
-    s = s.replace(/^\./, '');           // strip a leading dot
-    var a = s.split('.');
-    while (a.length) {
-        var n = a.shift();
-        if (n in o) {
-            o = o[n];
-        } else {
-            return 0;
-        }
+Object.byString = function (o, s) {
+  s = s.replace(/\[(\w+)\]/g, '.$1'); // convert indexes to properties
+  s = s.replace(/^\./, '');           // strip a leading dot
+  var a = s.split('.');
+  while (a.length) {
+    var n = a.shift();
+    if (n in o) {
+      o = o[n];
+    } else {
+      return 0;
     }
-    return o;
+  }
+  return o;
 }
 
 /////////////////////////////////////////////////
@@ -388,7 +408,7 @@ for (var i = 6; i < 15; i++) {
     sectionLookup["0" + i.toString()] = "Section 2";
   }
   else {
-    sectionLookup[i] = "Section 2";      
+    sectionLookup[i] = "Section 2";
   }
 }
 sectionLookup[15] = "Section 3";
