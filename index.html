@@ -1,0 +1,56 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+
+<html>
+
+  <head>
+    <script src="./static/d3.v3.min.js" charset="utf-8"></script> 
+    <script src="./static/queue.v1.min.js"></script>
+    <script src="./static/topojson.v1.min.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="./static/us_trade.css">
+
+  </head>
+
+  <body style="margin-left:20px; margin-top:15px">
+    <!-- title bar -->
+    <h1 style="font-family: Rockwell; font-size: 32px; font-style: normal;">United States Trade from 2010 to 2014</h1>
+    <h1 style="font-family: Rockwell; font-size: 15px; font-style: italic; margin-right: 30px;">Select trade flow direction and month of interest:</h2>
+    <!-- map + bar + filters -->
+    <div id="filters" style="height:240px; margin-top: 25px;">
+      <div id="buttons" style="width:160px; float: left">
+        <button id="net" name="tradeButton" class="trade-direction-active" onclick="tradeFlowButton('net')" style="background: url('./static/button_bckgrnd.png') no-repeat">Net Trade</button>
+        <button id="import" name="tradeButton" class="trade-direction" onclick="tradeFlowButton('import')" style="background:#026689">Imports Only</button>
+        <button id="export" name="tradeButton" class="trade-direction" onclick="tradeFlowButton('export')" style="background:#F0622E">Exports Only</button>
+      </div>
+      <div id="timeline">
+      <div id="play_buttons" style="margin-top: 8px; width: 30px; float: left;">
+        <input type="button" id="play" value="&#xf04b;" style="font-family: fontawesome; margin-bottom: 5px;" onClick="playTimeline()">
+        <input type="button" value="&#xf04c;" style="font-family: fontawesome; margin-bottom: 5px;" onClick="pauseTimeline()">
+        <input type="button" value="&#xf0e2;" style="font-family: fontawesome;" onClick="restartTimeline()">
+      </div>
+        <form>
+          <input id="slider" type="range" name="slider" min="0" max="52" value="0" step="1">
+        </form>
+      </div>
+    </div>
+    <div id="map_and_bars">
+      <div id="map" style="float: left; margin-right: 25px;"></div>
+      <div id="bar_chart"></div>
+    </div>
+
+    <!-- advanced options -->
+    <div id="advanced_options">
+    </div>
+
+    <script src="./js/us_trade.js"></script>
+    <script src="./js/drawBarChart.js"></script>
+    <script src="./js/growArrow.js"></script>
+    <script src="./js/timeline.js"></script>
+    <script src="./js/transitionBarChart.js"></script>
+    <script src="./js/playTimeline.js"></script>
+    <script src="./js/tree.js"></script>
+    <script src="./js/calculateRelativePercentage.js"></script>
+
+  </body>
+
+</html>

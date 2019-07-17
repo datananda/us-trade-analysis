@@ -1,0 +1,103 @@
+.map_path {
+  stroke: #C4C4C4;
+  stroke-width: 0.75px;
+  fill: white;
+}
+
+#slider {
+  width: 1310px;
+  margin-left: 35px;
+}
+
+button.trade-direction {
+  border: 0 none;
+  border-radius: 20% 20% 20% 20%;
+  height: 36px;
+  width: 114px;
+  margin-top: 10px;
+  margin-bottom: 30px;
+  font-size: 80%;
+  outline: none;
+  opacity: 0.3;
+  color: white;
+}
+
+button.trade-direction-active {
+  border: 0 none;
+  border-radius: 20% 20% 20% 20%;
+  height: 36px;
+  width: 114px;
+  margin-top: 10px;
+  margin-bottom: 30px;
+  font-size: 80%;
+  outline: none;
+  font-weight: bold;
+  color: white;
+}
+
+@font-face {
+    font-family: 'latin_modern_roman10_regular';
+    src: url('../fonts/lmroman10-regular-webfont.eot');
+    src: url('../fonts/lmroman10-regular-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/lmroman10-regular-webfont.woff') format('woff'),
+         url('../fonts/lmroman10-regular-webfont.ttf') format('truetype'),
+         url('../fonts/lmroman10-regular-webfont.svg#latin_modern_roman10_regular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'latin_modern_roman10_italic';
+    src: url('../fonts/lmroman10-italic-webfont.eot');
+    src: url('../fonts/lmroman10-italic-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/lmroman10-italic-webfont.woff') format('woff'),
+         url('../fonts/lmroman10-italic-webfont.ttf') format('truetype'),
+         url('../fonts/lmroman10-italic-webfont.svg#latin_modern_roman10_italic') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'fontawesome';
+    src: url('../fonts/fontawesome-webfont.eot');
+    src: url('../fonts/fontawesome-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/fontawesome-webfont.woff') format('woff'),
+         url('../fonts/fontawesome-webfont.ttf') format('truetype'),
+         url('../fonts/fontawesome-webfont.svg#fontawesome') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+h1 {
+  margin-bottom: 15px;
+}
+
+body {
+  font-family: 'Calibri';
+}
+
+form {
+  margin-bottom: 0px;
+}
+
+.barCntryLabels {
+  font-size: 12px;
+  text-anchor: end;
+  text-align: right;
+}
+
+.barCntryValues {
+  font-size: 12px;
+  text-anchor: start;
+  text-align: left;
+}
+
+/* styling for commodity tree hierarchy */
+.nodeText {
+  font: 10px sans-serif;
+  cursor: pointer;
+}
+
+.expand, .contract {
+  cursor: default;
+}
